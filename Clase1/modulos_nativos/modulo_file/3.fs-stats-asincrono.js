@@ -1,3 +1,9 @@
+//Esto solo en los modulos nativos 
+//que no tienen promesas nativas 
+// const {promisity} = require('node:util')
+// const readFile = promisify(fs.readFile)
+
+
 const fs = require('node:fs')
 console.log('leyendo el archivo de forma asincrona') 
 
