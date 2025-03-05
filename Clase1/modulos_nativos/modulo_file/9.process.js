@@ -1,6 +1,6 @@
 // argumentos de entrada
-/*
-console.log(process.argv)
+
+console.log('->'+process.argv)
 
 //podemos controlar el proceso y su salida 
 //console.log(process.exit(1))
@@ -11,7 +11,7 @@ process.on('exit',(()=>{
 }))
 
 
-*/
+
 //current working directory , me devuelve la ruta donde se esta ejecutando el script
 console.log(process.cwd())
 
