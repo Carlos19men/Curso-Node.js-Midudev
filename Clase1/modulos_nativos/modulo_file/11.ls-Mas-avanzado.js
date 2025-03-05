@@ -48,6 +48,7 @@ async function ls (folder){
 
     filesInfo.forEach(fileInfo => console.log(fileInfo))
 
+    //puse otro comentario solo para verlo en el commit 
 }
 
 //llamamos a la función
