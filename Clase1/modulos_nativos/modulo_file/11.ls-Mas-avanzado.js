@@ -3,10 +3,18 @@ const path = require('node:path')
 
 
 //aquí lo que hacemos es ver si el usuario ingresó una carpeta o no, si no ingresó nada, se toma la carpeta actual
+
+/*
+    Aquí usamos el process para obtener los argumentos que el usuario ingresó en la terminal
+*/ 
 const folder = process.argv[2] ?? '.'
 console.log(folder)
 
-//creamos una función asincrona para poder usar await
+/*creamos una función asincrona para poder usar await, aquí creamos una función 
+asincrona secuencial ya que primero tenemos que leer todos los ficheros para 
+luego despues extraer la información 
+
+*/
 async function ls (folder){
     let files 
 
@@ -19,8 +27,12 @@ async function ls (folder){
         process.exit(1)
     }
 
-    //creamos todas las promesas de todos lo archivos 
+    /*creamos todas las promesas de todos lo archivos 
 
+        Aquí creamos una promesa en paralelo ya que de aquí si podemos extraer toda la información
+        en paralelo para despues mostrarla 
+
+    */
     const filesPromises = files.map(async file => {
         //vamos a recopilar la información de cada archivo
         const filePath = path.join(folder, file)
@@ -40,7 +52,7 @@ async function ls (folder){
         const fileSize = stats.size
         const fileModified = stats.mtime.toDateString()
         
-        return `${symbol} ${file} - ${fileSize} bytes, ${fileModified}`	
+        return `${symbol} ${file.padEnd(35)} - ${fileSize.toString().padStart(10)} bytes, ${fileModified}`	
     })
 
     //esperamos todas las promesas 
