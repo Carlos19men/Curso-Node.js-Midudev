@@ -1,5 +1,6 @@
 const fs = require('node:fs/promises')
 const path = require('node:path')
+const pc = require('picocolors')  //<- instalé esta dependencia OMG ! 
 
 
 //aquí lo que hacemos es ver si el usuario ingresó una carpeta o no, si no ingresó nada, se toma la carpeta actual
@@ -23,7 +24,7 @@ async function ls (folder){
         files = await fs.readdir(folder)
     }catch(error){
         //controlamos el error con un catch 
-        console.error(`No se pudo leer la carpeta ${folder}`)
+        console.error(pc.red(`No se pudo leer la carpeta ${folder}`))
         process.exit(1)
     }
 
@@ -52,7 +53,7 @@ async function ls (folder){
         const fileSize = stats.size
         const fileModified = stats.mtime.toDateString()
         
-        return `${symbol} ${file.padEnd(35)} - ${fileSize.toString().padStart(10)} bytes, ${fileModified}`	
+        return `${symbol} ${pc.blue(file.padEnd(35))} - ${pc.green(fileSize.toString().padStart(10))} bytes, ${pc.yellow(fileModified)}`	
     })
 
     //esperamos todas las promesas 
