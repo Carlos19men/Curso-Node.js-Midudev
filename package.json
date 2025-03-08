@@ -1,0 +1,12 @@
+{
+  "name": "curso-node.js-midudev",
+  "version": "1.0.0",
+  "description": "Este repositorio será para hacer el curso de Node.js de midu.dev",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
