@@ -1,1 +1,17 @@
+###obtener la información de ditto 
 GET http://localhost:1234/pokemon/ditto
+
+###metodo post para crear un nuevo poquemon  
+POST http://localhost:1234/pokemon
+Content-Type: application/json
+
+{
+    "name": "ditto",
+    "type": "normal",
+    "moves": [
+        "transform"
+    ]
+}
+
+### para separa una petición es obligatoriamente con ###diiiubbiuui5r5fffrrff6
+
