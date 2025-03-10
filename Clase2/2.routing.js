@@ -1,4 +1,4 @@
-const http = require('hode:http')
+const http = require('node:http')
 const dittoJson = require('./pokemon/ditto.json')
 
 const processRequest = (req,res) => {
@@ -18,11 +18,19 @@ const processRequest = (req,res) => {
                     return res.end('<h1> 404 </h1>')
             }
         case 'POST': 
+            switch (url) {
+                case '/pokemon': {
+                    let body = ''
+                    break; 
+                    //?????
+                }
+                   
+            }
             
     }
 }
 
-const sever = http.createServer(processRequest)
+const server = http.createServer(processRequest)
 
 server.listen(1234, () => {
     console.log('server listening on port http://localhost:1234')
