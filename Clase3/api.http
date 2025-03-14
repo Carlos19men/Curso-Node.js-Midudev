@@ -12,6 +12,23 @@ POST http://localhost:1234/movies
 Content-Type: application/json
 
 {
-    "title": 1,
-    "year": "hola"    
+    "sql": "SELECT * FROM users",
+  "title": "The Shawshank Redemption",
+    "year": 1994,
+    "director": "Frank Darabont",
+    "duration": 142,
+    "poster": "https://i.ebayimg.com/images/g/4goAAOSwMyBe7hnQ/s-l1200.webp",
+    "genre": [
+      "Drama"
+    ],
+    "rate": 9.3
+}
+
+###Actualizar una pelicula 
+PATCH http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+Content-Type: application/json
+
+{
+    "year": 2004,
+    "duration":13
 }
