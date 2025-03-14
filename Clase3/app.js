@@ -1,7 +1,7 @@
 const express = require('express')
 const crypto = require('node:crypto')
 const movies = require('./movies.json')
-const { validateMovie } = require('./schemas/movies.js')
+const { validateMovie, validatePartialMovie } = require('./schemas/movies.js')
 
 const app = express() 
 
@@ -91,7 +91,7 @@ app.post('/movies',(req,res) => {
    if(result.error){
     //se podue usar el 400 o el 422
     return res.status(400).json({
-        error: json.parse(result.error.message) 
+        error: JSON.parse(result.error.message)
     })
    }
 
@@ -111,6 +111,13 @@ app.post('/movies',(req,res) => {
         "id": crypto.randomUUID(), // uuid v4
         ...result.data
     }
+    /**
+     *   ..result.data no es lo mismo que req.body
+     *  result.data ya sabemos lo que es 
+     * 
+     * req.body no sabemos que nos estan metiendo, 
+     * y podria ser de todo un poco
+     */
 
     console.log(newMovie)
 
@@ -123,6 +130,38 @@ app.post('/movies',(req,res) => {
    movies.push(newMovie)
 
    res.status(201).json(newMovie)
+})
+
+//modificar una pelicula con patch 
+app.patch('/movies/:id',(req,res) => {
+    const result = validatePartialMovie(req.body)
+
+    if(!result.success){
+        return res.status(400).json({error: JSON.parse(result.error.message)})
+    }
+
+    const { id } = req.params
+    const movieIndex = movies.findIndex(movie => movie.id === id)
+
+    if(movieIndex < 0 ){
+        return res.status(404).json({message: 'movie not found'})
+    }
+
+
+    /**
+     * Todos los datos validados de movies[movieIndex] y 
+     * todos los nuevos datos de resul.data 
+     */
+    const updateMovie = {
+        ...movies[movieIndex],
+        ...result.data
+    }
+    console.log(updateMovie)
+    movies[movieIndex] = updateMovie
+
+    return res.json(updateMovie)
+
+
 })
 
 //puerto 
