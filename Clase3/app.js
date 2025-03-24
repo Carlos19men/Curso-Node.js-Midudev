@@ -1,6 +1,7 @@
 const express = require('express')
 const crypto = require('node:crypto')
 const movies = require('./movies.json')
+const cors = require('cors')
 const { validateMovie, validatePartialMovie } = require('./schemas/movies.js')
 
 const app = express() 
@@ -9,8 +10,10 @@ const app = express()
 app.disable('x-powered-by')
 
 app.use(express.json())
+//app.use(cors())
 
 
+const ACCESS_ORIGIN = ['http://localhost:1234', 'http://localhost:3001', 'http://localhost:3002','http://127.0.0.1:5500']
 /* 
     Como estamos haciendo un post, recuerden que 
     trabajamos con chunks y que express tiene un 
@@ -25,6 +28,28 @@ app.get('/', (req, res) => {
 //Todos los rescuros que sean movies se indentifican con /movies
 app.get('/movies', (req, res) => {
 
+    /**
+     * Agreguamos esta linea para agregar una cabecera y así solucionar el problema del
+     * cors 
+     * 
+     *  con el (*) estamos indicando que estamos permitiendo todos los origenes que no 
+     * sean nuestro propio origen, estan permitidos 
+     * 
+     * No es necesario hacer esto con *, tambien podemos poner una lista con los origenes que 
+     * vamos a permitir, cosa en la que tambien el puerto tiene que coincidir 
+     * 
+     * Lo que podemos hacer es tener una lista con los origenes que queremos aceptar y los comparamos
+     * con el origen que podemos obtener de la request 
+     */
+
+    const origin = req.header('Origin')
+    console.log(origin)
+
+    if(ACCESS_ORIGIN.includes(origin)){
+        console.log('si incluye la cabecera ')
+        res.header('Access-Control-Allow-Origin', origin)
+    }
+    
     const { genre } = req.query
 
     if(genre){
@@ -132,6 +157,31 @@ app.post('/movies',(req,res) => {
    res.status(201).json(newMovie)
 })
 
+app.delete('/movies/:id',(req,res) => {
+
+	//extraemos la cabecera de la request
+	const origin = req.header('origin') 
+	
+	if(ACCESS_ORIGIN.includes(origin) || !origin) {
+	
+		/*
+			enviamos la cabecera con la response para 
+			evitar el error de cors 
+		*/
+		res.header('Access-Control-Allow-Origin',origin)
+	
+	}
+    
+    const { id } = req.params 
+    const movieIndex = movies.findIndex(movie => movie.id === id)
+
+    if(movieIndex === -1){
+        return res.status(404).json({message: 'Movie not found'})
+    }
+    movies.splice(movieIndex, 1)
+    return res.json({message: 'Movie deleted'})
+}) 
+
 //modificar una pelicula con patch 
 app.patch('/movies/:id',(req,res) => {
     const result = validatePartialMovie(req.body)
@@ -162,6 +212,28 @@ app.patch('/movies/:id',(req,res) => {
     return res.json(updateMovie)
 
 
+})
+
+//optiones para los procesos complejos 
+app.options('/movies/:id',(req,res) => {
+	
+	//extraemos la cabecera del origen 
+	const origin = req.header('origin') 
+	
+	if(ACCESS_ORIGIN.includes(origin) || !origin) 
+	
+		/*
+			enviamos la cabecera con la response para 
+			evitar el error de cors 
+		*/
+		res.header('Access-Control-Allow-Origin',origin)
+	
+		/*y aquí lo que hacemos es idicar cuales son 
+		las operaciones que podemos realizar 
+		*/
+		res.header('Access-Control-Allow-Methods','GET, DELETE,PATCH')
+	}
+	res.sendStatus(200)
 })
 
 //puerto 
