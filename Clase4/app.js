@@ -1,12 +1,10 @@
 import express, { json } from 'express'
 import { randomUUID } from 'node:crypto'
 import cors from 'cors'
+import { readJSON } from './utils.js'
 
 //la forma recomenda por ahora, creando  un require 
-import { createRequire } from 'node:module'
-const require = createRequire(import.meta.url) 
-const movies = require('./movies.json') 
-
+const movies = readJSON('./movies.json')
 const app = express() 
 
 //deshabilitar el header X-powerd-BY: Express
