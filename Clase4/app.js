@@ -1,15 +1,15 @@
-const express = require('express')
-const crypto = require('node:crypto')
-const movies = require('./movies.json')
-const cors = require('cors')
-const { validateMovie, validatePartialMovie } = require('./schemas/movies.js')
+import express, { json } from 'express'
+import { randomUUID } from 'node:crypto'
+import movies from './movies.json'
+import cors from 'cors'
+import { validateMovie, validatePartialMovie } from './schemas/movies.js'
 
 const app = express() 
 
 //deshabilitar el header X-powerd-BY: Express
 app.disable('x-powered-by')
 
-app.use(express.json())
+app.use(json())
 //app.use(cors())
 
 
@@ -133,7 +133,7 @@ app.post('/movies',(req,res) => {
      * que hemos validado la entrada de datos 
      */
     const newMovie = {
-        "id": crypto.randomUUID(), // uuid v4
+        "id": randomUUID(), // uuid v4
         ...result.data
     }
     /**
@@ -152,7 +152,7 @@ app.post('/movies',(req,res) => {
         el estad de la aplicación en memoria 
     */
 
-   movies.push(newMovie)
+   movie.push(newMovie)
 
    res.status(201).json(newMovie)
 })
