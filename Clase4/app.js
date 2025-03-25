@@ -1,8 +1,11 @@
 import express, { json } from 'express'
 import { randomUUID } from 'node:crypto'
-import movies from './movies.json'
 import cors from 'cors'
-import { validateMovie, validatePartialMovie } from './schemas/movies.js'
+
+//la forma recomenda por ahora, creando  un require 
+import { createRequire } from 'node:module'
+const require = createRequire(import.meta.url) 
+const movies = require('./movies.json') 
 
 const app = express() 
 
@@ -111,7 +114,7 @@ app.post('/movies',(req,res) => {
 
    //validamos el req.body 
 
-   const result = validateMovie(req.body)
+   const result = movies.validateMovie(req.body)
 
    if(result.error){
     //se podue usar el 400 o el 422
@@ -184,7 +187,7 @@ app.delete('/movies/:id',(req,res) => {
 
 //modificar una pelicula con patch 
 app.patch('/movies/:id',(req,res) => {
-    const result = validatePartialMovie(req.body)
+    const result = movies.validatePartialMovie(req.body)
 
     if(!result.success){
         return res.status(400).json({error: JSON.parse(result.error.message)})
