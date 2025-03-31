@@ -3,9 +3,6 @@ import { readJSON } from './utils.js'
 import { moviesRouter } from './routes/movies.js'
 import { corsMidleware } from './middlewares/cors.js'
 
-const movies = readJSON('./movies.json')
-
-
 const app = express()
 app.use(json())
 app.use(corsMidleware())
@@ -19,7 +16,7 @@ app.get('/', (req, res) => {
 
 //con esto ya estamos aplanando la aplicación 
 //agrupando la ruta 
-app.get('/movies', moviesRouter)
+app.use('/movies', moviesRouter)
 
 
 const PORT = process.env.PORT ?? 1234
