@@ -42,6 +42,7 @@ export class MovieController {
         res.status(201).json(newMovie)
     }
 
+    //puse un comentario
     static async delete (req,res){
     
         const { id } = req.params 
