@@ -48,7 +48,7 @@ export class MovieModel {
 
         movies.splice(movieIndex,1)
 
-        return TextTrackCue
+        return true
     }
 
     static async update ( { id, input }){
