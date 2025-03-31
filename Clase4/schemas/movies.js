@@ -1,4 +1,4 @@
-
+import { require } from '../utils.js'
 const zod = require('zod')
 
  /*
@@ -31,7 +31,7 @@ const movieSchema = zod.object({
     safeParse nos devuelve un objeto (resuleto) donde nos indica si han habido errores 
     o no al momento de hacer la conversión en un objeto de tipo safeParse
 */
-function validateMovie (object) {
+export function validateMovie (object) {
     return movieSchema.safeParse(object)
 }
 
@@ -42,11 +42,7 @@ function validateMovie (object) {
     que para el esquema de validación los campos van 
     a ser opcionales, no pasa nada ni no estan 
 */
-function validatePartialMovie(input){
+export function validatePartialMovie(input){
     return movieSchema.partial().safeParse(input)
 }
 
-module.exports = {
-    validateMovie,
-    validatePartialMovie
-}

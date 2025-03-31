@@ -1,3 +1,5 @@
+import express from 'express'
+import cors from 'cors'
 const app = express()
 
 const ACCEPTED_ORIGINS = [
