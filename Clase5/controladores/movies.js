@@ -1,10 +1,11 @@
 import zod from 'zod'
-import { MovieModel } from '../models/movie.js'
+import { MovieModel } from '../models/mysql/movies.js'
 import { validateMovie,validatePartialMovie } from '../schemas/movies.js'
 
 export class MovieController {
     static async getAll (req, res) {
         const { genre } = req.query
+        console.log(genre)
         const movies = await MovieModel.getAll({genre})
         return res.json(movies)
     }
