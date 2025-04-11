@@ -1,5 +1,5 @@
 import express, { json } from 'express'
-import { readJSON } from './utils.js'
+import { readJSON, require } from './utils.js'
 import { moviesRouter } from './routes/movies.js'
 import { corsMidleware } from './middlewares/cors.js'
 
@@ -7,7 +7,6 @@ const app = express()
 app.use(json())
 app.use(corsMidleware())
 app.disable('x-powered-by')
-
 
 
 app.get('/', (req, res) => {
