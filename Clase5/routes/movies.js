@@ -1,19 +1,27 @@
 import { Router } from 'express'
 import { MovieController } from '../controladores/movies.js'
-
-export const moviesRouter = Router()
-
-moviesRouter.get('/', MovieController.getAll)
-
-moviesRouter.get('/:id',  MovieController.getById)
-/*
-    Crear una nueva movie
-
-    en este caso nosotros creamos el id 
-*/
-moviesRouter.post('/',MovieController.create)
+import { MovieModel } from '../models/mysql/movies.js'
 
 
-moviesRouter.delete('/:id',MovieController.delete) 
+export const createMovieRouter = ({ movieModel }) =>{
+    const moviesRouter = Router()
 
-moviesRouter.patch('/:id',MovieController.update)
+    const movieController = new MovieController({movieModel: MovieModel})
+
+    moviesRouter.get('/', movieController.getAll)
+
+    moviesRouter.get('/:id',  movieController.getById)
+    /*
+        Crear una nueva movie
+
+        en este caso nosotros creamos el id 
+    */
+    moviesRouter.post('/',movieController.create)
+
+
+    moviesRouter.delete('/:id',movieController.delete) 
+
+    moviesRouter.patch('/:id',movieController.update)
+
+    return moviesRouter
+}

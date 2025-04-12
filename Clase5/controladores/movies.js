@@ -1,23 +1,28 @@
-import zod from 'zod'
-import { MovieModel } from '../models/mysql/movies.js'
 import { validateMovie,validatePartialMovie } from '../schemas/movies.js'
 
 export class MovieController {
-    static async getAll (req, res) {
+
+    //constructor
+    constructor({movieModel}){
+        this.movieModel = movieModel
+    }
+
+
+    getAll = async (req, res) =>  {
         const { genre } = req.query
         console.log(genre)
-        const movies = await MovieModel.getAll({genre})
+        const movies = await this.movieModel.getAll({genre})
         return res.json(movies)
     }
 
-    static async getById (req,res) {
+    getById = async (req, res) =>  {
         const {id} = req.params //extrahemos el id de la url 
 
         /*
             Busamos en el json de peliculas la pelicula por 
             el id 
         */
-        const movie = await MovieModel.getById({ id })
+        const movie = await this.movieModel.getById({ id })
     
         if(movie) return res.json(movie) //retornamos la pelicula 
     
@@ -25,7 +30,7 @@ export class MovieController {
         res.status(404).json({message: 'Movie not found'})
     }
 
-    static async create (req,res) {
+    create = async (req, res) =>  {
          //validamos el req.body 
         const result = validateMovie(req.body)
         console.log(result)
@@ -38,17 +43,17 @@ export class MovieController {
         }
     
         // en base de datos 
-        const newMovie = await MovieModel.create({input: result.data})
+        const newMovie = await this.movieModel.create({input: result.data})
     
         res.status(201).json(newMovie)
     }
 
     //puse un comentario
-    static async delete (req,res){
+    delete = async (req, res) => {
     
         const { id } = req.params 
         
-        const result = await MovieModel.delete( { id } )
+        const result = await this.movieModel.delete( { id } )
     
         if(!result){
             return res.status(404).json({ message: 'Movie not found'})
@@ -56,7 +61,7 @@ export class MovieController {
         return res.json({message: 'Movie deleted'})
     }
 
-    static async update (req,res) {
+    update = async (req, res) =>  {
         const result = validatePartialMovie(req.body)
     
         if(!result.success){
@@ -65,7 +70,7 @@ export class MovieController {
     
         const { id } = req.params
         
-        const updateMovie = await MovieModel.update({id,input: result.data})
+        const updateMovie = await this.movieModel.update({id,input: result.data})
     
         return res.json(updateMovie)
     }
