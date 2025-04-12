@@ -4,6 +4,7 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
+    "start:mysql": "nodemon server-with-mysql.js",
     "dev": "nodemon app.js"
   },
   "keywords": [],
