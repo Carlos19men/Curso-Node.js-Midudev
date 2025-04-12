@@ -24,13 +24,14 @@ Content-Type: application/json
 }
 
 ###Eliminar pelicula
-DELETE http://localhost:1234/movies/6d73844d-1294-11f0-b4d0-94e979c70727
+DELETE http://localhost:1234/movies/5db695ac-1294-11f0-b4d0-94e979c70727
 
 ###Actualizar una pelicula 
-PATCH http://localhost:1234/movies/5db695ac-1294-11f0-b4d0-94e979c70727
+PATCH http://localhost:1234/movies/19a675bd-17a3-11f0-940b-94e979c70727
 Content-Type: application/json
 
 {
     "year": 1950,
-    "duration":45
+    "duration":45,
+    "palabras":"si ps"
 }
