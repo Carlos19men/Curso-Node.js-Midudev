@@ -4,7 +4,10 @@ import crypto from 'crypto'
 
 import bcrypt from 'bcrypt'
 import { SALT_ROUNDS } from './config.js'
-import { validatedUser } from './schemas/user.js'
+import { validatedUser, Validation} from './schemas/user.js'
+import { readJSON } from './util.js'
+const users = readJSON('./db/User.json')
+
 
 
 
@@ -18,7 +21,7 @@ const User = Schema('User', {
 
 //creamos una clase para usuarios 
 export class UserRepository {
-    static create ({username, password}) {
+    static async create ({username, password}) {
         //1. validated user 
         const result = validatedUser.safeParse({username: username , password: password})  
 
@@ -29,7 +32,7 @@ export class UserRepository {
             if(user) throw new Error('username already exists')
 
             const id = crypto.randomUUID()
-            const hashedPassword = bcrypt.hashSync(password,SALT_ROUNDS)
+            const hashedPassword = await bcrypt.hash(password,SALT_ROUNDS)
 
 
             User.create({
@@ -40,9 +43,23 @@ export class UserRepository {
 
             return id
         }
-        console.log('no entró')
-        
-        return Error('user not valited')
+        throw new Error('user not valited')
     }
-    static login ({username, password}) {}
+
+    static async login ({username, password}) {
+
+        Validation.userName(username)
+        Validation.password(password)
+
+        //find the username
+        const user = users.find(user => user.username === username)
+        if(!user) throw new Error('username dos not exist')
+
+        const isValid = await bcrypt.compare(password,user.password)
+        if(!isValid) throw new Error('password is invalid')
+
+        //we not up the private date of the user, we have to quit that password
+        const {password: _ , ...publicUser } = user
+        return publicUser
+    }
 }

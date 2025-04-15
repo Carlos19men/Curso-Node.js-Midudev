@@ -1,31 +1,51 @@
 import express from 'express'
 import { PORT } from './config.js'
 import { UserRepository } from './user-repository.js'
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const app = express()
 //el middelware para que req.body no sea undefined 
 app.use(express.json())
 
+//siempre que vayamos a usar un modelo de plantillas tenemos que setearlo en nuestra app
+app.set('view engine', 'ejs')
 
 app.get('/',(req,res) => {
-    res.send('Hello wordd !!')
+    res.render('index')
 })
 
 // Edpoints
 
-app.post('/login', (res,req) => {})
-
-
-app.post('/register', (req,res) => {
-
-    //en condiciones normales se deben validar la entrada de la requuest 
+app.post('/login', async (req,res) => {
+    console.log(req.body)
 
     const { username, password } = req.body
-
     try{
 
-        const id = UserRepository.create({username,password})
+        const user = await UserRepository.login({username, password})
+        const token = jwt.sing({id: user._id, username:user.username},process.env.SECRET_JWT_KEY,
+            {
+                expiresIn: '1h'
+            }
+        )
 
+        res.send({user})
+    }catch (error){
+        res.status(401).send(error.message)
+    }
+})
+
+
+app.post('/register', async (req,res) => {
+    //en condiciones normales se deben validar la entrada de la requuest 
+    const { username, password } = req.body
+    conso
+
+    try{
+        const id = await UserRepository.create({username,password})
         res.send({ id })
     }catch (error) {
         //Normalmente no es buena idea enviar el error como respuesta!
@@ -33,9 +53,9 @@ app.post('/register', (req,res) => {
     }
 
 })
-app.post('/logout', (res,req) => {})
+app.post('/logout', (req,res) => {})
 
-app.get('/protected', (res,req) => {})
+app.get('/protected', (req,res) => {})
 
 
 app.listen(PORT, () => {
