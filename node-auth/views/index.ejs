@@ -41,6 +41,7 @@
         }
 
         input[type="text"],
+
         input[type="password"] {
             width: 100%;
             padding: 10px;
@@ -87,51 +88,49 @@
             <h2>Iniciar Sesión</h2>
             <form id='login-form'>
                 <div class="form-group">
-                    <label for="username-login">Usuario:</label>
+                    <label for="username">Usuario:</label>
                     <input type="text" id="username-login" name="username" required>
                 </div>
                 <div class="form-group">
-                    <label for="password-login">Contraseña:</label>
+                    <label for="password">Contraseña:</label>
                     <input type="password" id="password-login" name="password" required>
                 </div>
                 <button type="submit">Entrar</button>
-                <span id="login-message" class="error-message"></span>
             </form>
         </div>
 
         <div class="login-container">
             <h2>Registro</h2>
-            <form id='register-form'>
+            <form id='register-container'>
                 <div class="form-group">
-                    <label for="username-register">Usuario:</label>
+                    <label for="username">Usuario:</label>
                     <input type="text" id="username-register" name="username" required>
                 </div>
                 <div class="form-group">
-                    <label for="password-register">Contraseña:</label>
+                    <label for="password">Contraseña:</label>
                     <input type="password" id="password-register" name="password" required>
                 </div>
                 <button type="submit">Registrarse</button>
-                <span id="register-message" class="error-message"></span>
-            </form>
+                </form>
         </div>
     <% } %>
-
+ 
     <script>
         const $ = el => document.querySelector(el)
 
         const loginForm = $('#login-form')
-        const loginMessageSpan = $('#login-message')
+        const loginSpan = $('#login-form span')
 
         const registerForm = $('#register-form')
-        const registerMessageSpan = $('#register-message')
+        const registerSpan = $('#register-form span')
 
         const logoutButton = $('#close-session')
 
         loginForm?.addEventListener('submit',e => {
             e.preventDefault()
 
-            const username = $('#username-login').value
-            const password = $('#password-login').value
+            const username = $('#username-login').innerText
+            const password = $('#password-login').innerText
 
             fetch('/login',{
                 method: 'POST',
@@ -140,57 +139,49 @@
                 },
                 body: JSON.stringify({username, password})
             })
-            .then(res => res.json())
-            .then(data => {
-                if(data.success){
-                    loginMessageSpan.innerText = 'Sesión iniciada... entrando ...'
-                    loginMessageSpan.style.color = 'green'
+            .then(res => {
+                if(res.ok){
+                    loginSpan.innerText = 'Sesión inciada... entrando ...'
+                    loginSpan.style.color = 'green'
                     setTimeout(() => {
                         window.location.href = '/protected'
                     }, 2000)
                 } else {
-                    loginMessageSpan.innerText = data.message || 'Error al iniciar sesión'
-                    loginMessageSpan.style.color = 'red'
+                    loginSpan.innerTExt = 'Error al inciar sesión'
+                    loginSpan.style.color = 'red'
                 }
             })
-            .catch(error => {
-                console.error("Error en la petición de login:", error);
-                loginMessageSpan.innerText = 'Error de conexión';
-                loginMessageSpan.style.color = 'red';
-            });
+
+        
         })
 
         registerForm?.addEventListener('submit',e => {
             e.preventDefault()
 
-            const username = $('#username-register').value
-            const password = $('#password-register').value
+            const username = $('#username')
+            const password = $('#password')
 
-            fetch('/register',{
+            fetch('/login',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({username, password})
             })
-            .then(res => res.json())
-            .then(data => {
-                if(data.success){
-                    registerMessageSpan.innerText = 'Registro exitoso. Redirigiendo para iniciar sesión...'
-                    registerMessageSpan.style.color = 'green'
+            .then(res => {
+                if(res.ok){
+                    loginSpan.innerText = 'Sesión inciada... entrando ...'
+                    loginSpan.style.color = 'green'
                     setTimeout(() => {
-                        window.location.href = '/login';
-                    }, 2000);
+                        window.location.href = '/protected'
+                    }, 2000)
                 } else {
-                    registerMessageSpan.innerText = data.message || 'Error al registrarse';
-                    registerMessageSpan.style.color = 'red';
+                    loginSpan.innerTExt = 'Error al inciar sesión'
+                    loginSpan.style.color = 'red'
                 }
             })
-            .catch(error => {
-                console.error("Error en la petición de registro:", error);
-                registerMessageSpan.innerText = 'Error de conexión';
-                registerMessageSpan.style.color = 'red';
-            });
+
+        
         })
 
         logoutButton?.addEventListener('click', e => {
@@ -201,16 +192,11 @@
                     'Content-Type': 'application/json'
                 }
             })
-            .then(res => res.json()) // Asegúrate de parsear la respuesta JSON también aquí
-            .then(data => { // Puedes manejar la respuesta del servidor si es necesario
-                console.log(data);
-                window.location.href = '/'
-            })
-            .catch(error => {
-                console.error("Error en la petición de logout:", error);
-                // Opcionalmente, muestra un mensaje de error al usuario
-            });
         })
+         .then(res => {
+            console.log(res)
+            window.location.href = '/'
+         })
     </script>
 </body>
 </html>
