@@ -42,7 +42,7 @@ app.post('/login', async (req,res) => {
 app.post('/register', async (req,res) => {
     //en condiciones normales se deben validar la entrada de la requuest 
     const { username, password } = req.body
-    conso
+    console.log(req.body)
 
     try{
         const id = await UserRepository.create({username,password})
