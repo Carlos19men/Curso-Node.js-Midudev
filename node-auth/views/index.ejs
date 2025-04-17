@@ -45,19 +45,18 @@
     </div>
 
     <script>
+        console.log('sripct')
         const $ = el => document.querySelector(el)
 
         const loginForm = $('#login-form')
-        const loginSpan = $('#login-span')
 
-        const registerForm = $('register')
-        const regsiterFormSapn = $('register-span')
+        const registerForm = $('#register')
 
         loginForm?.addEventListener('submit', e => {
             e.preventDefault()
 
-            const username = $('#username-login')
-            const password = $('#password-login')
+            const username = $('#username-login').value
+            const password = $('#password-login').value
 
             fetch('/login',{
                 method: 'POST',
@@ -67,25 +66,21 @@
                 body: JSON.stringify({username, password})
             })
             .then(res => {
-                console.log('entonces')
                 if(res.ok){
-                    loginSpan.innerText = 'Sesión inciada... entrando ...'
-                    loginSpan.style.color = 'green'
-                    setTimeout(() => {
-                        window.location.href = '/protected'
-                    }, 2000)
+                    window.location.href = '/protected'
                 } else {
-                    loginSpan.innerTExt = 'Error al inciar sesión'
-                    loginSpan.style.color = 'red'
+                    console.log('Error al inciar sesion ')
                 }
             })
         })
 
+        
         registerForm?.addEventListener('submit', e => {
             e.preventDefault()
-
-            const username = $('#username-register')
-            const password = $('#password-register')
+            console.log('entre al registro')
+            const username = $('#username-register').value
+            const password = $('#password-register').value
+            console.log(username)
 
             fetch('/register',{
                 method: 'POST',
@@ -94,16 +89,11 @@
                 },
                 body: JSON.stringify({username, password})
             })
-            .then(res => {
+            .then((res) => {
                 if(res.ok){
-                    regsiterFormSapn.innerText = 'Usuario registrado...'
-                    regsiterFormSapn.style.color = 'green'
-                    setTimeout(() => {
-                        window.location.href = '/protected'
-                    }, 2000)
+                    console.log('Se pudo registrar')
                 } else {
-                    regsiterFormSapn.innerTExt = 'Error al registrar usuario'
-                    regsiterFormSapn.style.color = 'red'
+                    console.log('No se pudo registrar')
                 }
             })
         })

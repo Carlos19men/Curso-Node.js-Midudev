@@ -1,17 +1,1 @@
-[
-    {
-        "_id": "ea9f7486-7312-485b-8b67-c191d53c40ed",
-        "username": "carlos",
-        "password": "$2b$10$YMKsA.BYm9Md9HC2rS9Yaevo0AvV91yrc8t9wMiuSVV2J0YQF76S2"
-    },
-    {
-        "_id": "a4a7609d-a385-4148-8473-03dcd4e59e7b",
-        "username": "jsl",
-        "password": "$2b$10$0jF7Td.jRJomY.Xp35JbE.MyH3HtcUPX2Ns4Vipiwy1ViEE1/fVaq"
-    },
-    {
-        "_id": "8083bc93-1acb-4bad-83c4-e62cc60394fc",
-        "username": "jsla",
-        "password": "$2b$10$eMOprFkftfcfPkkY210BBua/XZadhGNhLSGyRwfdXI3EoRgjl0s.S"
-    }
-]
+[{"_id":"45555dd8-6dd1-4b06-a84f-529fd78b27b7","username":"carlos3","password":"$2b$10$kOopWl8QO6vgJGCGZQOi5OQuhKrv96D3WGJXaVM0hX0QVXUe4iR6m"},{"_id":"6c59ba62-e2b8-4933-829d-340f1d6337af","username":"carlos2","password":"$2b$10$z.7FFuhy5oxyzTlrOyI1q.5zGgP2Vec8Zo7tcpMQzoCWWHn3LmBGG"},{"_id":"ea9f7486-7312-485b-8b67-c191d53c40ed","username":"carlos","password":"$2b$10$YMKsA.BYm9Md9HC2rS9Yaevo0AvV91yrc8t9wMiuSVV2J0YQF76S2"},{"_id":"a4a7609d-a385-4148-8473-03dcd4e59e7b","username":"jsl","password":"$2b$10$0jF7Td.jRJomY.Xp35JbE.MyH3HtcUPX2Ns4Vipiwy1ViEE1/fVaq"},{"_id":"8083bc93-1acb-4bad-83c4-e62cc60394fc","username":"jsla","password":"$2b$10$eMOprFkftfcfPkkY210BBua/XZadhGNhLSGyRwfdXI3EoRgjl0s.S"}]

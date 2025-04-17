@@ -20,21 +20,21 @@ app.get('/',(req,res) => {
 // Edpoints
 
 app.post('/login', async (req,res) => {
-    console.log(req.body)
 
     const { username, password } = req.body
     try{
 
         const user = await UserRepository.login({username, password})
-        const token = jwt.sing({id: user._id, username:user.username},process.env.SECRET_JWT_KEY,
+        /*const token = jwt.sing({id: user._id, username:user.username},process.env.SECRET_JWT_KEY,
             {
                 expiresIn: '1h'
             }
-        )
-
+        )*/
+        console.log(user)
         res.send({user})
     }catch (error){
-        res.status(401).send(error.message)
+        console.log(error.menssage)
+        res.status(401).send(error)
     }
 })
 

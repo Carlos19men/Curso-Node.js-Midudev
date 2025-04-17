@@ -48,18 +48,20 @@ export class UserRepository {
 
     static async login ({username, password}) {
 
+        
         Validation.userName(username)
         Validation.password(password)
 
         //find the username
-        const user = users.find(user => user.username === username)
+        const user = users.find(user => user['username'] === username)
         if(!user) throw new Error('username dos not exist')
 
-        const isValid = await bcrypt.compare(password,user.password)
+        const isValid = await bcrypt.compare(password,user['password'])
         if(!isValid) throw new Error('password is invalid')
 
         //we not up the private date of the user, we have to quit that password
         const {password: _ , ...publicUser } = user
+
         return publicUser
     }
 }
