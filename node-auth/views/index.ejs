@@ -23,16 +23,9 @@
 
     <div class="container">
 
-        <% if(typeof username !== 'undefined') { %>
-            <div class="container">
-                <h2> Hola <%= username %>! </h2>
-                <p> Estas en el panel de administración </p>
-                <button id='close-sesion'> Cerrar sesión</button>
-            </div>
+        
 
-        <% } %>
-
-        <% if(typeof username === 'undefined') { %>
+        <% if(!user) { %>
             <form id="login-form">
                 <input type='text' id="username-login" required placeholder="Username">
                 <input type='password' id='password-login' required placeholder="password"> 
@@ -48,6 +41,17 @@
                 <p id="register-span"></p>
             </form>
         <% } %>
+
+        <% if(user && (typeof user.username !== 'undefined')) { %>
+            <div class="container">
+                <h2> Hola <%= user.username %>! </h2>
+                <p> Estas en el panel de administración </p>
+                <button id='close-sesion'> Cerrar sesión</button>
+            </div>
+
+        <% } %>
+
+       
 
     </div>
 

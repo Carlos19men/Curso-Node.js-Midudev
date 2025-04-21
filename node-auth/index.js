@@ -17,26 +17,31 @@ app.use(cookieParser())
 app.set('view engine', 'ejs')
 
 //token 
+// 
+
 app.use((req, res, next) => {
     const token = req.cookies?.authToken; 
     //read the content cookie 
-
-
     //vamos a poder acceder a esta sesión por cualquier edpoint más adelante 
     req.session = {user: null}
 
     try{
         const data = jwt.verify(token,process.env.SECRET_JWT_KEY); //veryfy token 
         req.session.user = data; //agregar el usuario decodificado al objeto 'req'
-        next(); 
     }catch (err){}
 
     next();  //-> seguir a la siguiente ruta o middelware 
-})
+}) 
+
+
+
+
 
 app.get('/',(req,res) => {
-    const { user } = req.session 
-    res.render('index',user)
+
+    const { user } = req.session; //destructuramos el objeto session
+    console.log(user)
+    res.render('index', {user: user}) //le pasamos el objeto user a la vista
 })
 
 // Edpoints
@@ -91,14 +96,13 @@ app.post('/logout', (req,res) => {
 })
 
 app.get('/protected', (req,res) => {
-    //get the token 
+    //get the user for the session 
+    const { user} = req.session; 
+    if(!user){
+        return res.status(403).send({message: 'Unauthorized'})
+    }
 
-    const { user } = req.session 
-
-    if(!user) return res.status(403).send('Access not authorized')
-    
-
-    res.render('protected', user)
+    res.render('protected', {user: user})
 })
 
 
