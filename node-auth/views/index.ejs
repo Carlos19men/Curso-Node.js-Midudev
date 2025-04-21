@@ -17,40 +17,48 @@
             border-radius: 25px;
             background-color: cornsilk;
         }
-
-        
-
-
     </style>
 </head>
 <body>
 
     <div class="container">
 
-        <form id="login-form">
-            <input type='text' id="username-login" required placeholder="Username">
-            <input type='password' id='password-login' required placeholder="password"> 
-            <input type="submit">
-            <p id="login-span"></p>
-        </form>
+        <% if(typeof username !== 'undefined') { %>
+            <div class="container">
+                <h2> Hola <%= username %>! </h2>
+                <p> Estas en el panel de administración </p>
+                <button id='close-sesion'> Cerrar sesión</button>
+            </div>
 
-        <h2>Sing in</h2>
-        <form id="register">
-            <input type='text' id="username-register" required placeholder="Username">
-            <input type='password' id='password-register' required placeholder="password"> 
-            <input type="submit">
-            <p id="register-span"></p>
-        </form>
+        <% } %>
+
+        <% if(typeof username === 'undefined') { %>
+            <form id="login-form">
+                <input type='text' id="username-login" required placeholder="Username">
+                <input type='password' id='password-login' required placeholder="password"> 
+                <input type="submit">
+                <p id="login-span"></p>
+            </form>
+    
+            <h2>Sing in</h2>
+            <form id="register">
+                <input type='text' id="username-register" required placeholder="Username">
+                <input type='password' id='password-register' required placeholder="password"> 
+                <input type="submit">
+                <p id="register-span"></p>
+            </form>
+        <% } %>
 
     </div>
 
     <script>
-        console.log('sripct')
         const $ = el => document.querySelector(el)
 
         const loginForm = $('#login-form')
 
         const registerForm = $('#register')
+
+        const logoutButton = $('#close-sesion')
 
         loginForm?.addEventListener('submit', e => {
             e.preventDefault()
@@ -66,8 +74,10 @@
                 body: JSON.stringify({username, password})
             })
             .then(res => {
+                console.log(res)
                 if(res.ok){
-                    window.location.href = '/protected'
+                    console.log('esta bien')
+                    window.location.href='/protected'
                 } else {
                     console.log('Error al inciar sesion ')
                 }
@@ -77,10 +87,8 @@
         
         registerForm?.addEventListener('submit', e => {
             e.preventDefault()
-            console.log('entre al registro')
             const username = $('#username-register').value
             const password = $('#password-register').value
-            console.log(username)
 
             fetch('/register',{
                 method: 'POST',
@@ -97,15 +105,21 @@
                 }
             })
         })
+
+        logoutButton?.addEventListener('click',e => {
+            e.preventDefault()
+            fetch('/logout',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => {
+                console.log(res)
+                window.location.href = '/'
+            })
+        })
     </script>
-
-
-
-
-  
-
-
-
  
     <!--
       <script>
